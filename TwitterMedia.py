@@ -74,22 +74,21 @@ class TwitterMedia:
             self._print('Deleting the csrf token!')
             if Path('csrftoken').is_file():
                 Path('csrftoken').unlink()
-
             return
 
-        max_res = 0
-        max_url = ''
+        urls, res = [], []
+
         soup = BeautifulSoup(content, 'html.parser')
         for url in soup.select('a.expanded.button.small.float-right'):
-            # NOTE: Using a resolution regex (compiled) would be better here.
-            url = url['href']
-            res = url.split('/')[7]
-            res = int(res.split('x')[1])
-            if max_res < res:
-                max_res = res
-                max_url = url
-
-        return TwitterMediaContent(max_url, 'video')
+            urls.append(url['href'])
+            
+        if len(urls) == 1:
+            return TwitterMediaContent(urls[0], 'gif')
+        else:
+            for url in urls:
+                resolution = url.split('/')[7]
+                res.append(int(resolution.split('x')[1]))
+            return TwitterMediaContent(urls[res.index(max(res))], 'video')
 
     def _generate_token(self):
         # FIXME: Should we instead look for self.token only?
