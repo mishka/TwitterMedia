@@ -1,4 +1,4 @@
-import requests
+import re, requests
 from pathlib import Path
 from bs4 import BeautifulSoup
 from shutil import copyfileobj
@@ -86,8 +86,8 @@ class TwitterMedia:
             return TwitterMediaContent(urls[0], 'gif')
         else:
             for url in urls:
-                resolution = url.split('/')[7]
-                res.append(int(resolution.split('x')[1]))
+                resolution = re.search(r'/[0-9]*x[0-9]*/', url).group(0)
+                res.append(int((resolution.replace('/', '')).split('x')[1]))
             return TwitterMediaContent(urls[res.index(max(res))], 'video')
 
     def _generate_token(self):
