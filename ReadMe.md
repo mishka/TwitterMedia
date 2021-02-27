@@ -3,7 +3,7 @@
 It is a really simple and lightweight library for scraping and downloading twitter video/gifs.  
 
 There's a telegram bot as an example usage, you can find the source code on the [twittermd_Bot.py](https://github.com/mishka/TwitterMedia/blob/main/twittermd_Bot.py) file.  
-You can check the [@twittermd_Bot](https://t.me/twittermd_Bot) bot on telegram.  
+You can also check the [@twittermd_Bot](https://t.me/twittermd_Bot) bot on telegram.  
 
 # Usage
 
