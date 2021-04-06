@@ -32,4 +32,7 @@ dl_filename = downloader.download(tweet.url)
 # You can also assign custom filenames to the downloaded file
 # The extension is always '.mp4' for twitter media, be it video or a gif
 downloader.download(tweet.url, custom = 'custom_name')
+
+# Download with username and status id
+downloader.download(tweet.url, custom = tweet.filename)
 ```
