@@ -15,10 +15,12 @@ HEADERS = {
 class TwitterMediaContent:
     url = None
     type = None
+    filename = None
 
-    def __init__(self, url, type):
+    def __init__(self, url, type, filename):
         self.url = url
         self.type = type
+        self.filename = filename
 
     def __getitem__(self, name):
         if name == 'url':
@@ -26,6 +28,9 @@ class TwitterMediaContent:
 
         if name == 'type':
             return self.type
+
+        if name == 'filename':
+            return self.filename
 
 
 class TwitterMedia:
@@ -78,17 +83,21 @@ class TwitterMedia:
 
         urls, res = [], []
 
+        statusID = re.findall(r'status/([\d.]*\d+)', url)
+        username = re.findall('.com/(.*)/status', url)
+        filename = '{}_{}'.format(username[0], statusID[0])
         soup = BeautifulSoup(content, 'html.parser')
+
         for url in soup.select('a.expanded.button.small.float-right'):
             urls.append(url['href'])
-            
+
         if len(urls) == 1:
-            return TwitterMediaContent(urls[0], 'gif')
+            return TwitterMediaContent(urls[0], 'gif', filename)
         else:
             for url in urls:
                 resolution = re.search(r'/[0-9]*x[0-9]*/', url).group(0)
                 res.append(int((resolution.replace('/', '')).split('x')[1]))
-            return TwitterMediaContent(urls[res.index(max(res))], 'video')
+            return TwitterMediaContent(urls[res.index(max(res))], 'video', filename)
 
     def _generate_token(self):
         # FIXME: Should we instead look for self.token only?
