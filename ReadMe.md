@@ -4,6 +4,7 @@ It is a really simple and lightweight library for scraping and downloading twitt
 
 There's a telegram bot as an example usage, you can find the source code on the [twittermd_Bot.py](https://github.com/mishka/TwitterMedia/blob/main/twittermd_Bot.py) file.  
 You can also check the [@twittermd_Bot](https://t.me/twittermd_Bot) bot on telegram.  
+UPDATE: As of 05/02/2022 and 70K queries later, I've made the bot private, only accessible for certain people.  
 
 # Usage
 
