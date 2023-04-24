@@ -3,12 +3,14 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from shutil import copyfileobj
 from urllib.parse import quote as qt
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 HEADERS = {
     'authority': 'twittervideodownloader.com',
+    'Referer': 'http://twittervideodownloader.com/',
     'content-type': 'application/x-www-form-urlencoded',
-    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36',
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
+    'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Mobile/15E148 Safari/604.1',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
 }
 
 
@@ -38,15 +40,19 @@ class TwitterMedia:
         self._token = ''
         self._is_token_generated = False
         self._use_print = use_print
-        self.main_page = 'https://twittervideodownloader.com/'
-        self.download_page = 'https://twittervideodownloader.com/download'
+        self.main_page = 'https://165.227.112.236/'
+        self.download_page = 'https://165.227.112.236/download'
+
+        # bypassing cloudflare bullshit by directly accessing the website url.
+        # needed a quick fix to resolve the SSL certificate error
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
     def browser(self, post, url, **kwargs):
         with requests.Session() as session:
             if post:
-                return session.post(url, headers=kwargs['headers'], cookies=kwargs['cookies'], data=kwargs['rawdata'])
+                return session.post(url, verify=False, headers=kwargs['headers'], cookies=kwargs['cookies'], data=kwargs['rawdata'])
             else:
-                return session.get(url, stream=True)
+                return session.get(url, verify=False, stream=True)
 
     def download(self, url, custom=None):
         filename = (url.split('/')[-1]).split('?')[0]
@@ -111,6 +117,7 @@ class TwitterMedia:
             self._print('Loaded the csrf token from cache.\n')
         else:
             session = self.browser(0, self.main_page)
+            self._print(session.content)
             self._print(session.cookies)
             csrftoken = session.cookies['csrftoken']
 
