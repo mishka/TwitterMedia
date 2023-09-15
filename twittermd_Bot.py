@@ -10,7 +10,7 @@ from telegram import ParseMode
 from telegram.ext import Updater, MessageHandler, CommandHandler
 
 
-Pattern = r'(https?://)?(mobile.)?twitter.com/.+?/status/\d+'
+Pattern = r'(https?://)?(mobile\.)?(twitter|x)\.com/.+?/status/\d+'
 Downloader = TwitterMedia(use_print = True)
 
 
