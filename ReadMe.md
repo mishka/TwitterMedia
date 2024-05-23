@@ -1,5 +1,3 @@
-# 𐰸𐰆𐱁𐰏𐰡𐰤! 
-
 It is a really simple and lightweight library for scraping and downloading twitter video/gifs.  
 
 There's a telegram bot as an example usage, you can find the source code on the [twittermd_Bot.py](https://github.com/mishka/TwitterMedia/blob/main/twittermd_Bot.py) file.  
